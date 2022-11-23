@@ -1,11 +1,8 @@
 import pandas as pd
 import numpy as np
-import pprint
 import bisect
-import os
 import time
 import logging
-import math
 
 logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s- %(message)s')
 start_time = time.time()
@@ -32,7 +29,7 @@ lap_data_cumsum = lap_data.iloc[:, :].cumsum()
 
 # find max race time to use for time step
 stacked_times = np.hstack(lap_data_cumsum.values)
-#duration = math.ciel(max(stacked_times))
+
 duration = max(stacked_times)
 logging.debug("Duration: %s" % duration)
 output_grid = {}
