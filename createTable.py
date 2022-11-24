@@ -4,40 +4,74 @@ import psycopg2
 from config import config
 
 
-def create_tables():
+def createTables():
     """ create tables in the PostgreSQL database"""
     commands = (
-        """
-        CREATE TABLE vendors (
-            vendor_id SERIAL PRIMARY KEY,
-            vendor_name VARCHAR(255) NOT NULL
-        )
-        """,
-        """ CREATE TABLE parts (
-                part_id SERIAL PRIMARY KEY,
-                part_name VARCHAR(255) NOT NULL
+                """ 
+        CREATE TABLE weekends (
+                weekendID SERIAL PRIMARY KEY,
+                year INTEGER NOT NULL,
+                weekendName VARCHAR(255) NOT NULL
                 )
         """,
         """
-        CREATE TABLE part_drawings (
-                part_id INTEGER PRIMARY KEY,
-                file_extension VARCHAR(5) NOT NULL,
-                drawing_data BYTEA NOT NULL,
-                FOREIGN KEY (part_id)
-                REFERENCES parts (part_id)
-                ON UPDATE CASCADE ON DELETE CASCADE
+        CREATE TABLE races (
+                raceID SERIAL PRIMARY KEY,
+                weekendID INTEGER NOT NULL,
+                raceName VARCHAR(255) NOT NULL,
+                raceType VARCHAR(255) NOT NULL,
+                FOREIGN KEY (weekendID)
+                    REFERENCES weekends (weekendID)
+                    ON UPDATE CASCADE ON DELETE CASCADE
+
         )
         """,
         """
-        CREATE TABLE vendor_parts (
-                vendor_id INTEGER NOT NULL,
-                part_id INTEGER NOT NULL,
-                PRIMARY KEY (vendor_id , part_id),
-                FOREIGN KEY (vendor_id)
-                    REFERENCES vendors (vendor_id)
+        CREATE TABLE karts (
+                kartID INTEGER PRIMARY KEY,
+                kartName VARCHAR(255) NOT NULL
+        )
+        """,
+        """
+        CREATE TABLE finish (
+                raceID INTEGER NOT NULL,
+                kartID INTEGER NOT NULL,
+                finish INTEGER NOT NULL,
+                PRIMARY KEY (raceID , kartID),
+                FOREIGN KEY (raceID)
+                    REFERENCES races (raceID)
                     ON UPDATE CASCADE ON DELETE CASCADE,
-                FOREIGN KEY (part_id)
-                    REFERENCES parts (part_id)
+                FOREIGN KEY (kartID)
+                    REFERENCES karts (kartID)
+                    ON UPDATE CASCADE ON DELETE CASCADE
+        )
+        """,
+        """
+        CREATE TABLE qualifying (
+                weekendID INTEGER NOT NULL,
+                kartID INTEGER NOT NULL,
+                qualifyingRank INTEGER NOT NULL,
+                qualifyingTIME REAL,
+                PRIMARY KEY (weekendID , kartID),
+                FOREIGN KEY (weekendID)
+                    REFERENCES weekends (weekendID)
+                    ON UPDATE CASCADE ON DELETE CASCADE,
+                FOREIGN KEY (kartID)
+                    REFERENCES karts (kartID)
+                    ON UPDATE CASCADE ON DELETE CASCADE
+        )
+        """,
+        """
+        CREATE TABLE laps (
+                raceID INTEGER NOT NULL,
+                kartID INTEGER NOT NULL,
+                lapNumber INTEGER PRIMARY KEY,
+                lapTime REAL NOT NULL,
+                FOREIGN KEY (raceID)
+                    REFERENCES races (raceID)
+                    ON UPDATE CASCADE ON DELETE CASCADE,
+                FOREIGN KEY (kartID)
+                    REFERENCES karts (kartID)
                     ON UPDATE CASCADE ON DELETE CASCADE
         )
         """)
@@ -63,4 +97,4 @@ def create_tables():
 
 
 if __name__ == '__main__':
-    create_tables()
+    createTables()
