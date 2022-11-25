@@ -7,7 +7,8 @@ from config import config
 def createTables():
     """ create tables in the PostgreSQL database"""
     commands = (
-                """ 
+                
+        """ 
         CREATE TABLE weekends (
                 weekendID SERIAL PRIMARY KEY,
                 year INTEGER NOT NULL,
@@ -28,7 +29,7 @@ def createTables():
         """,
         """
         CREATE TABLE karts (
-                kartID INTEGER PRIMARY KEY,
+                kartID SERIAL PRIMARY KEY,
                 kartName VARCHAR(255) NOT NULL
         )
         """,
@@ -65,8 +66,9 @@ def createTables():
         CREATE TABLE laps (
                 raceID INTEGER NOT NULL,
                 kartID INTEGER NOT NULL,
-                lapNumber INTEGER PRIMARY KEY,
+                lapNumber INTEGER NOT NULL,
                 lapTime REAL NOT NULL,
+                PRIMARY KEY (lapNumber, raceID, kartID),
                 FOREIGN KEY (raceID)
                     REFERENCES races (raceID)
                     ON UPDATE CASCADE ON DELETE CASCADE,

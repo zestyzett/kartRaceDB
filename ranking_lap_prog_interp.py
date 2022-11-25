@@ -59,7 +59,8 @@ for k in lap_data_cumsum.keys():
             rel_lap = ((time_current - time_lower) / (time_higher - time_lower)) + (ll+1) #interpolation of progress of lap plus the lower lap number. it is plus 1 because ll is indexed at 0
         #logging.debug("Rel Lap: %s" % rel_lap)
         if i == 0:
-            output_grid[k].append((rel_lap/100)+1) # fudge first lap position to reflect starting  grid at start of lap 1
+            output_grid[k].append((rel_lap/100)+1) # fudge first lap position to reflect starting  grid at start of lap 1 
+            #should use qualifying if possible
         output_grid[k].append(rel_lap)
         i = i + 1
 
