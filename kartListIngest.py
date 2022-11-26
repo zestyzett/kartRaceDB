@@ -11,6 +11,7 @@ logging.debug("--- %s seconds ---" % (time.time() - start_time))
 
 #logging.disable(logging.CRITICAL)
 
+#pull master lsit and convert to list
 kartList = pd.read_csv('data\kart master list.csv', header = None)
 kartList = kartList[0].tolist()
 
@@ -44,5 +45,9 @@ def insertKart(kartName):
 
     return kartID
 
+
+"""insert karts into database, kartID is autoincremented so it is not necessary to send
+this will make it easier to add karts later
+right now I am making all karts have unique names"""
 for i in kartList:
     insertKart(i)
