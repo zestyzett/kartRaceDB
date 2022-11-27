@@ -116,12 +116,12 @@ for file in listOfWeekends:
 
         kartID = getKartID(kartName)
 
-        print(kartName,kartID)
+        #logging.debug(kartName,kartID)
 
         insertQualResult(weekendID, kartID, qualPosition, qualTime)
 
 
-
+logging.debug("--- %s seconds ---" % (time.time() - start_time))
 
 
 

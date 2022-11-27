@@ -17,7 +17,7 @@ kartList = kartList[0].tolist()
 
 
 def insertKart(kartName):
-    """ insert a new vendor into the vendors table """
+    """ insert a new kart into the karts table """
     sql = """INSERT INTO karts(kartName)
              VALUES(%s) RETURNING kartID;"""
     conn = None
@@ -51,3 +51,5 @@ this will make it easier to add karts later
 right now I am making all karts have unique names"""
 for i in kartList:
     insertKart(i)
+
+logging.debug("--- %s seconds ---" % (time.time() - start_time))

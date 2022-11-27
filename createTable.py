@@ -68,6 +68,8 @@ def createTables():
                 kartID INTEGER NOT NULL,
                 lapNumber INTEGER NOT NULL,
                 lapTime REAL NOT NULL,
+                rank INTEGER NOT NULL,
+                cumtime REAL NOT NULL,
                 PRIMARY KEY (lapNumber, raceID, kartID),
                 FOREIGN KEY (raceID)
                     REFERENCES races (raceID)
