@@ -12,6 +12,7 @@ logging.debug("--- %s seconds ---" % (time.time() - start_time))
 
 #logging.disable(logging.CRITICAL)
 
+# I have precompiled and cheacked the race data in csvs in this folder
 listOfRaces = os.listdir("data\Raw")
 
 def getKartID(kartName):
@@ -153,28 +154,34 @@ def insertLap(raceID, kartID, lapNumber, lapTime, cumTime, rank):
         if conn is not None:
             conn.close()
 
+
 for file in listOfRaces:
+    #i prebaked the info in the file name
     weekendName = file.split("-")[0].lower()
     year = int(file.split("-")[1])
     raceName = file.split("-")[2][:-4]
 
    
-    
+    #this is hardcoded because there are only two race types
     if raceName[0].lower() == 's':
         raceType = 'sprint'
     else:
         raceType = 'endurance'
 
+    #fetches weekend ID, don't know what it will do if one hasn't been uploaded yet
     weekendID = getWeekendID(weekendName, year)
 
+    
     raceData = pd.read_csv('data\Raw\%s' % file)
     
     raceID = insertRace(weekendID,raceName, raceType)
 
     del raceData['lap']
-    
+
+    #cumulative some of lap times, total elapsed time    
     lapDataCumSum = raceData.iloc[:, :].cumsum()
 
+    #lap by lap ranking summary based off cumsum
     rankData = lapDataCumSum.rank(axis = 1, ascending = True)
 
      
