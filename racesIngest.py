@@ -3,7 +3,7 @@ import time
 import logging
 import psycopg2
 import os
-from config import config
+from kartrace.config import config
 
 logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s- %(message)s')
 start_time = time.time()

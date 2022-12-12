@@ -1,0 +1,31 @@
+{% extends 'base.html '%}
+
+{% block header %}
+    <h1> {% block title %}Select Race {{x.index()}}{% endblock%}</h1>
+{% endblock %}
+
+{% block content%}
+    <select>
+    {% for race in races %}
+        <option value="{{race['id']}}">{{race['race_name']}}</option>
+    {% endfor %}
+    </select>
+
+    {% for kartid in x.keys() %}
+        <style> 
+            #kartid {
+                position: absolute
+            }
+        </style>
+        
+        <div id = "{{kartid}}">
+            
+            <h1> {{kartid}}</h1>
+        </div>
+    {% endfor %}
+
+
+  
+    
+
+{% endblock %}

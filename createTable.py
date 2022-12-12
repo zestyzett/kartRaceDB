@@ -1,7 +1,7 @@
 #createTable
 
 import psycopg2
-from config import config
+from kartrace.config import config
 
 
 def createTables():
