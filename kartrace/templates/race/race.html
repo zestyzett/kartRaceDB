@@ -1,7 +1,7 @@
 {% extends 'base.html '%}
 
 {% block header %}
-    <h1> {% block title %}Select Race {{x.index()}}{% endblock%}</h1>
+    <h1> {% block title %}Select Race {{pathDict['American flyer']}}{% endblock%}</h1>
 {% endblock %}
 
 {% block content%}
@@ -11,10 +11,26 @@
     {% endfor %}
     </select>
 
-    {% for kartid in x.keys() %}
+    {% for kartid in pathDict.keys() %}
         <style> 
-            #kartid {
-                position: absolute
+            #{{kartid}} {
+                offset-path: path("{{pathDict[kartid]}}");
+                offset-rotate: 0deg;
+                animation: move 3000ms infinite;
+                width: 40px;
+                height: 40px;
+                background: cyan;
+                position = absolute;
+            }
+
+            @keyframes move{
+                0%{
+                    offset-distance: 0%;
+                }
+
+                100%{
+                    offset-distance: 100%;
+                }
             }
         </style>
         
@@ -23,6 +39,7 @@
             <h1> {{kartid}}</h1>
         </div>
     {% endfor %}
+
 
 
   

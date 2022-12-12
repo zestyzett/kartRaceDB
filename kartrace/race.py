@@ -19,8 +19,9 @@ def race():
     db.execute("""SELECT id, race_name FROM races order by race_name""")
     races = db.fetchall()
     
-    x,y = animationFactory(1)
-    return render_template('race/race.html',races=races, x=x, y=y)
+    x,y = animationFactory(2)
+    pathDict = pathBuilder(x,y)
+    return render_template('race/race.html',races=races, pathDict=pathDict)
 
 def getLaps(raceid):
     conn = get_db()
@@ -72,7 +73,8 @@ def animationFactory(raceid):
 
     cumTimes = df.pivot(index = 'lap_num', columns= 'kart_name', values='cum_time')
 
-    duration = max(pd.DataFrame.max(cumTimes))
+    durations = pd.DataFrame.max(cumTimes)
+    duration = max(durations)
     timeStep = int(min(pd.DataFrame.min(lapTimes)))
 
     output_grid = {}
@@ -110,7 +112,7 @@ def animationFactory(raceid):
 
 
 
-    col_headers = np.arange(0, (duration + timeStep)/60, timeStep/60)
+    col_headers = np.arange(0, (duration + timeStep), timeStep)
     col_headers = col_headers.tolist()
 
     #lap_progression = pd.DataFrame.from_dict(output_grid, orient='index', columns=col_headers)
@@ -130,4 +132,23 @@ def animationFactory(raceid):
 
     ranking_data.to_dict( orient="index" )
 
-    return lap_progression, ranking_data
+    return lap_progression, ranking_data, durations
+
+def pathBuilder(x, y):
+
+    pathDict = {}
+
+    for key in x:
+
+        path = ''
+
+        for i in x[key].index:
+
+            if i == 0:
+                path = path+'M'+str(int(x[key][i]*10))+' '+str(int(y[key][i]*10))+' '
+            else:
+                path = path+'L'+str(int(x[key][i]*10))+' '+str(int(y[key][i]*10))+' '
+    
+        pathDict[key]=path
+        
+    return pathDict 
