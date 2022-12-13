@@ -1,7 +1,7 @@
 {% extends 'base.html '%}
 
 {% block header %}
-    <h1> {% block title %}Select Race {{pathDict['American flyer']}}{% endblock%}</h1>
+    <h1> {% block title %}Select Race {% endblock%}</h1>
 {% endblock %}
 
 {% block content%}
@@ -11,7 +11,7 @@
     {% endfor %}
     </select>
 
-    {% for kartid in pathDict.keys() %}
+    {% for kartid in t.keys() %}
         <style> 
             #{{kartid}} {
                 offset-path: path("{{pathDict[kartid]}}");
@@ -20,23 +20,23 @@
                 width: 40px;
                 height: 40px;
                 background: cyan;
-                position = absolute;
             }
 
-            @keyframes move{
-                0%{
-                    offset-distance: 0%;
-                }
+            @keyframes {{kartid}}{
+                {% for lap in t[kartid]%}
 
-                100%{
-                    offset-distance: 100%;
+                {{kartid}}:enabled {
+                top: {{lap}}
+                left: {{y[kartid][lap]}}       
                 }
+                {% endfor %}
             }
         </style>
-        
-        <div id = "{{kartid}}">
-            
-            <h1> {{kartid}}</h1>
+        <div class = "wrapper">
+            <div id = "{{kartid}}">
+                
+                <p> {{kartid}}</p>
+            </div>
         </div>
     {% endfor %}
 
