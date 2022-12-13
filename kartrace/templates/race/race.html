@@ -10,39 +10,24 @@
         <option value="{{race['id']}}">{{race['race_name']}}</option>
     {% endfor %}
     </select>
-
-    {% for kartid in t.keys() %}
-        <style> 
-            #{{kartid}} {
-                offset-path: path("{{pathDict[kartid]}}");
-                offset-rotate: 0deg;
-                animation: move 3000ms infinite;
-                width: 40px;
-                height: 40px;
-                background: cyan;
-            }
-
-            @keyframes {{kartid}}{
-                {% for lap in t[kartid]%}
-
-                {{kartid}}:enabled {
-                top: {{lap}}
-                left: {{y[kartid][lap]}}       
+        <div class = "wrapper"></div>
+        
+        {% for kartid in x.keys() %}
+        
+            <style> 
+                #{{kartid|replace(' ','')}} {
+                    width: 40px;
+                    height: 40px;
+                    background: cyan;
                 }
-                {% endfor %}
-            }
-        </style>
-        <div class = "wrapper">
-            <div id = "{{kartid}}">
-                
-                <p> {{kartid}}</p>
-            </div>
+
+            </style>
+            
+                <div id = "{{kartid|replace(' ','')}}">
+                    
+                    <p> {{kartid}}</p>
+                </div>
+        {% endfor %}
         </div>
-    {% endfor %}
-
-
-
-  
     
-
 {% endblock %}

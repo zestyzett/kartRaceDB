@@ -19,9 +19,8 @@ def race():
     db.execute("""SELECT id, race_name FROM races order by race_name""")
     races = db.fetchall()
     
-    t,y = animationFactory(13)
-    pathDict = simplePathBuilder(y)
-    return render_template('race/race.html',races=races, t=t, pathDict=pathDict)
+    x,y = animationFactory(13)
+    return render_template('race/race.html',races=races, x=x, y=y)
 
 def getLaps(raceid):
     conn = get_db()
@@ -128,16 +127,18 @@ def animationFactory(raceid):
     lap_progression = lap_progression.reindex(range(lap_progression.index.max()+1))
     lap_progression = lap_progression.interpolate('linear')
 
-    lap_progression.to_dict( orient="index" )
+    x = lap_progression.to_dict( orient="dict" )
 
-    ranking_data.to_dict( orient="index" )
+    y = ranking_data.to_dict( orient="dict" )
+
+    return x,y
 
     #return lap_progression, ranking_data
 
-    lapTimesDict = lapTimes.to_dict( orient="dict")
-    lapRanksDict = lapRanks.to_dict( orient="dict")
+    #lapTimesDict = lapTimes.to_dict( orient="dict")
+    #lapRanksDict = lapRanks.to_dict( orient="dict")
 
-    return lapTimesDict, lapRanksDict
+    #return lapTimesDict, lapRanksDict
 
 def pathBuilder(x, y):
 
@@ -153,25 +154,6 @@ def pathBuilder(x, y):
                 path = path+'M'+str(int(x[key][i]*10))+' '+str(int(y[key][i]*10))+' '
             else:
                 path = path+'L'+str(int(x[key][i]*10))+' '+str(int(y[key][i]*10))+' '
-    
-        pathDict[key]=path
-        
-    return pathDict 
-
-def simplePathBuilder(lapRankDict):
-
-    pathDict = {}
-
-    for key in lapRankDict:
-
-        path = ''
-
-        for i in lapRankDict[key].index:
-
-            if i == 0:
-                path = path+'M'+str((i+1)*10)+' '+str(int(lapRankDict[key][i]*10))+' '
-            else:
-                path = path+'L'+str((i+1)*10)+' '+str(int(lapRankDict[key][i]*10))+' '
     
         pathDict[key]=path
         
