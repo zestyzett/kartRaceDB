@@ -1,7 +1,7 @@
 {% extends 'base.html '%}
 
 {% block header %}
-    <h1> {% block title %}Select Race {% endblock%} <button onclick="kartMove({{x}},{{y}})">Click me</button></h1>
+    <h1 id="selector"> {% block title %}Select Race {% endblock%} <button onclick="kartMove({{x}},{{y}})">Click me</button></h1>
 {% endblock %}
 
 {% block content%}
@@ -43,7 +43,9 @@
     }
 
     async function kartMove(objX, objY) {
-  
+        
+        totalFrames =  (Object.keys((objX[Object.keys(objX)[0]])).length);
+        
         var id = null;
 
         clearInterval(id);
@@ -52,7 +54,8 @@
 
         function frame() {
             console.log(iter);
-            if(iter >= Object.keys(objX).length)
+            
+            if(iter >= totalFrames)
             {
             clearInterval(id);
             }
@@ -63,8 +66,11 @@
                 console.log(objX[key][iter]);
                 console.log(key.replace(/\s+/g, ''));
                 elem = document.getElementById(key.replace(/\s+/g, ''));
-                elem.style.top = objY[key][iter] * 20;
-                elem.style.left = objX[key][iter] * 10;
+                console.log(elem);
+                elem.style.top = (objY[key][iter] * 40)+"px";
+                elem.style.left = (objX[key][iter] * 20)+"px";
+                elem.style.position = "absolute";
+                elem.style.background = "green";
             }
             iter++;
             }

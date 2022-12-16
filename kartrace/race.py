@@ -19,7 +19,7 @@ def race():
     db.execute("""SELECT id, race_name FROM races order by race_name""")
     races = db.fetchall()
     
-    x,y = animationFactory(13)
+    x,y = animationFactory(14)
     return render_template('race/race.html',races=races, x=x, y=y)
 
 def getLaps(raceid):
