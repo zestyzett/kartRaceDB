@@ -1,7 +1,7 @@
 {% extends 'base.html '%}
 
 {% block header %}
-    <h1> {% block title %}Select Race {% endblock%}</h1>
+    <h1> {% block title %}Select Race {% endblock%} <button onclick="kartMove({{x}},{{y}})">Click me</button></h1>
 {% endblock %}
 
 {% block content%}
@@ -19,6 +19,8 @@
                     width: 40px;
                     height: 40px;
                     background: cyan;
+                    top: 1px;
+                    left: 1px;
                 }
 
             </style>
@@ -30,4 +32,44 @@
         {% endfor %}
         </div>
     
+
+
+
+
+<script type="text/javascript">
+
+    function myFunc() {
+        console.log("butts")
+    }
+
+    async function kartMove(objX, objY) {
+  
+        var id = null;
+
+        clearInterval(id);
+        id = setInterval(frame, 10);
+        iter =0;
+
+        function frame() {
+            console.log(iter);
+            if(iter >= Object.keys(objX).length)
+            {
+            clearInterval(id);
+            }
+            else
+            {
+            
+            for (let key in objX){
+                console.log(objX[key][iter]);
+                console.log(key.replace(/\s+/g, ''));
+                elem = document.getElementById(key.replace(/\s+/g, ''));
+                elem.style.top = objY[key][iter] * 20;
+                elem.style.left = objX[key][iter] * 10;
+            }
+            iter++;
+            }
+        }
+}
+</script>
+
 {% endblock %}
