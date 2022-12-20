@@ -35,4 +35,11 @@ def create_app(test_config=None):
     from . import race
     app.register_blueprint(race.bp)
 
+    from . import nav
+    app.register_blueprint(nav.bp)
+    app.add_url_rule('/', endpoint='index')
+
+    from . import year
+    app.register_blueprint(year.bp)
+
     return app

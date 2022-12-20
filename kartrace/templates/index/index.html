@@ -1,0 +1,21 @@
+{% extends 'base.html '%}
+
+{% block header %}
+    <h1> {% block title %}Select Year {% endblock%}
+{% endblock %}
+
+{% block content%}
+
+    <form action="{{ url_for('year.year', year =years['year']) }}" method="post">
+    <label for="year">Year:</label>
+    <select name="year" id="year">
+        {% for year in years %}
+            <option value="{{year['year']}}">{{year['year']}}</option>
+        {% endfor %}
+    </select>
+    <br><br>
+    <input type="submit" value="Submit">
+    </form>
+    
+
+{% endblock %}
