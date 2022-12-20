@@ -12,22 +12,23 @@
     </select>
         <div class = "wrapper"></div>
         
-        {% for kartid in x.keys() %}
+        {% for kartid in qualy %}
         
             <style> 
-                #{{kartid|replace(' ','')}} {
-                    width: 40px;
-                    height: 40px;
-                    background: cyan;
-                    top: 1px;
-                    left: 1px;
+                #{{kartid[0]|replace(' ','')}} {
+                    width: 0px;
+                    height: 0px;
+                    position: relative;
+                    top: {{kartid[1]*40}}px;
+                    left: 20px;
                 }
 
             </style>
             
-                <div id = "{{kartid|replace(' ','')}}">
+                <div id = "{{kartid[0]|replace(' ','')}}">
+                
+                    <img src="../static/Kart Icons/{{karts[kartid[0]]}}.png" width="40" height="40">
                     
-                    <p> {{kartid}}</p>
                 </div>
         {% endfor %}
         </div>
@@ -69,8 +70,7 @@
                 console.log(elem);
                 elem.style.top = (objY[key][iter] * 40)+"px";
                 elem.style.left = (objX[key][iter] * 20)+"px";
-                elem.style.position = "absolute";
-                elem.style.background = "green";
+                
             }
             iter++;
             }

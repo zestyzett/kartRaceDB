@@ -12,15 +12,33 @@ from kartrace.db import get_db
 
 bp = Blueprint('race',__name__)
 
-@bp.route('/race')
-def race():
+@bp.route('/race/<raceid>')
+def race(raceid):
+    raceid =int(raceid)
     conn = get_db()
     db = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
     db.execute("""SELECT id, race_name FROM races order by race_name""")
     races = db.fetchall()
+
+    db.execute("""SELECT kart_name, id FROM karts order by id""")
+    kartsCur = db.fetchall()
+    karts={}
+    for kart in kartsCur:
+        key = kart['kart_name']
+        value = kart['id']
+        karts[key]=value
     
-    x,y = animationFactory(14)
-    return render_template('race/race.html',races=races, x=x, y=y)
+    db.execute("""SELECT kart_name, qualy_rank
+                FROM qualy
+                INNER JOIN races on races.weekend_id = qualy.weekend_id
+                INNER JOIN karts on qualy.kart_id = karts.id
+                WHERE races.id = %s
+                ORDER by qualy_rank""",(raceid,))
+    qualy = db.fetchall()
+
+    x,y = animationFactory(raceid)
+    return render_template('race/race.html',races=races, karts = karts, qualy = qualy, x=x, y=y)
 
 def getLaps(raceid):
     conn = get_db()
