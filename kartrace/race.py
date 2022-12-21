@@ -137,13 +137,13 @@ def animationFactory(raceid):
 
     ranking_data = lap_progression.rank(axis = 1, ascending = False)
 
-    ranking_data.index = ranking_data.index * timeStep
-    ranking_data = ranking_data.reindex(range(ranking_data.index.max()+1))
-    ranking_data = ranking_data.interpolate('linear')
+    ranking_data.index = ranking_data.index * timeStep #spreads out index by time stemp so  every frame is 1 sec
+    ranking_data = ranking_data.reindex(range(ranking_data.index.max()+1)) 
+    ranking_data = ranking_data.interpolate('linear') #fills in gaps with interpolated data
 
-    lap_progression.index = lap_progression.index * timeStep
+    lap_progression.index = lap_progression.index * timeStep #spreads out index by time stemp so  every frame is 1 sec
     lap_progression = lap_progression.reindex(range(lap_progression.index.max()+1))
-    lap_progression = lap_progression.interpolate('linear')
+    lap_progression = lap_progression.interpolate('linear') #fills in gaps with interpolated data
 
     x = lap_progression.to_dict( orient="dict" )
 
@@ -160,6 +160,7 @@ def animationFactory(raceid):
 
 def pathBuilder(x, y):
 
+    # 
     pathDict = {}
 
     for key in x:
