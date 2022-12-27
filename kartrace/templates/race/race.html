@@ -27,7 +27,8 @@
                     height: 0px;
                     position: relative;
                     top: {{kartid[1]*40}}px;
-                    left: 20px;
+                    left: 0px;
+                    
                 }
 
             </style>
@@ -53,8 +54,11 @@
     async function kartMove(objX, objY) {
         
         totalFrames =  (Object.keys((objX[Object.keys(objX)[0]])).length);
+        console.log(totalFrames);
         totalWidth = document.getElementById("wrap1").offsetWidth-40;
         totalLaps = 0;
+        dur = 4500;
+        frameDur = (dur/totalFrames);
         for (let key in objX){
             
             if (objX[key][totalFrames-1] > totalLaps){
@@ -63,12 +67,12 @@
             }
         }
         
-        console.log(totalLaps);
-        
+        console.log(frameDur);
+        //console.log(Math.round(10000/totalFrames));
         var id = null;
 
         clearInterval(id);
-        id = setInterval(frame, 10);
+        id = setInterval(frame, frameDur*1000);
         iter =0;
 
         function frame() {
@@ -86,6 +90,8 @@
                 //console.log(key.replace(/\s+/g, ''));
                 elem = document.getElementById(key.replace(/\s+/g, ''));
                 //console.log(elem);
+                elem.style.transition = "top "+frameDur+"s, left "+frameDur+"s";
+                elem.style.transitionTimingFunction="linear";
                 elem.style.top = (objY[key][iter] * 40)+"px";
                 elem.style.left = (objX[key][iter] * totalWidth/totalLaps)+"px";
                 

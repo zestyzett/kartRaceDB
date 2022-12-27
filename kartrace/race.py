@@ -136,14 +136,14 @@ def animationFactory(raceid):
     lap_progression = pd.DataFrame.from_dict(output_grid, orient='columns')
 
     ranking_data = lap_progression.rank(axis = 1, ascending = False)
-
-    ranking_data.index = ranking_data.index * timeStep
+    """
+    ranking_data.index = ranking_data.index * timeStep #expands frames to 1 every second
     ranking_data = ranking_data.reindex(range(ranking_data.index.max()+1))
     ranking_data = ranking_data.interpolate('linear')
 
-    lap_progression.index = lap_progression.index * timeStep
+    lap_progression.index = lap_progression.index * timeStep #expands frames to 1 every second
     lap_progression = lap_progression.reindex(range(lap_progression.index.max()+1))
-    lap_progression = lap_progression.interpolate('linear')
+    lap_progression = lap_progression.interpolate('linear') """
 
     x = lap_progression.to_dict( orient="dict" )
 
