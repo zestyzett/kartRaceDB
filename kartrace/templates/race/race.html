@@ -6,11 +6,25 @@
 
 {% block content%}
     
-    <select>
-    {% for race in races %}
-        <option value="{{race['id']}}">{{race['race_name']}}</option>
+    <select id="year" onchange="updateWeekends()">
+    {% for year_select in races.keys() %}
+        <option value="{{year_select}}">{{year_select}}</option>
     {% endfor %}
     </select>
+    
+    <select id="weekend" onchange="updateRaces()">
+    {% for weekend in races[year].keys() %}
+        <option value="{{weekend}}">{{weekend}}</option>
+    {% endfor %}
+    </select>
+
+    <select id="race">
+    {% for race in races[year][weekend_name].keys() %}
+            <option value="{{race}}">{{race}}</option>
+    {% endfor %}
+    </select>
+    <button onclick="redir()">Go</button>
+
         <style>
         section.content{
             height: {{qualy|length*40+100}}px;
@@ -35,7 +49,7 @@
             
                 <div id = "{{kartid[0]|replace(' ','')}}">
                 
-                    <img src="../static/Kart Icons/{{karts[kartid[0]]}}.png" width="40" height="40">
+                    <img src="../../../static/Kart Icons/{{karts[kartid[0]]}}.png" width="40" height="40">
                     
                 </div>
         {% endfor %}
@@ -47,6 +61,64 @@
 
 <script type="text/javascript">
 
+    function updateWeekends(){
+        races = {{races|tojson}};
+        console.log(races);
+        var yearSelect = document.getElementById("year");
+        var weekendSelect = document.getElementById("weekend");
+
+        year = yearSelect.options[yearSelect.selectedIndex].value
+               
+        weekendSelect.options.length = 0;
+
+        var weekendsArray = Object.keys(races[year]);
+        console.log(weekendsArray)
+
+    
+        for(index in weekendsArray) {
+            weekendSelect.options[weekendSelect.options.length] = new Option(weekendsArray[index], weekendsArray[index]);
+        }
+
+        updateRaces();
+
+    }
+
+    function updateRaces(){
+        races = {{races|tojson}};
+        console.log(races);
+        var yearSelect = document.getElementById("year");
+        var weekendSelect = document.getElementById("weekend");
+        var raceSelect = document.getElementById("race");
+
+        year = yearSelect.options[yearSelect.selectedIndex].value
+        weekend = weekendSelect.options[weekendSelect.selectedIndex].value
+               
+        raceSelect.options.length = 0;
+
+        var racesArray = Object.keys(races[year][weekend]);
+        console.log(racesArray)
+
+    
+        for(index in racesArray) {
+            raceSelect.options[raceSelect.options.length] = new Option(racesArray[index], racesArray[index]);
+        }
+
+
+    }
+
+    function redir(){
+
+        var yearSelect = document.getElementById("year");
+        var weekendSelect = document.getElementById("weekend");
+        var raceSelect = document.getElementById("race");
+
+        year = yearSelect.options[yearSelect.selectedIndex].value
+        weekend = weekendSelect.options[weekendSelect.selectedIndex].value
+        race = raceSelect.options[raceSelect.selectedIndex].value
+        
+        location.href="../../"+year+"/"+weekend+"/"+race;
+    }
+
     function myFunc() {
         console.log("butts")
     }
@@ -57,7 +129,7 @@
         console.log(totalFrames);
         totalWidth = document.getElementById("wrap1").offsetWidth-40;
         totalLaps = 0;
-        dur = 4500;
+        dur = 10;
         frameDur = (dur/totalFrames);
         for (let key in objX){
             

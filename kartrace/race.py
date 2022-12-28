@@ -12,15 +12,28 @@ from kartrace.db import get_db
 
 bp = Blueprint('race',__name__)
 
-@bp.route('/race/<raceid>')
-def race(raceid):
-    raceid =int(raceid)
+@bp.route('/race/<year>/<weekend_name>/<race_name>')
+def race(year,weekend_name, race_name):
+
     conn = get_db()
     db = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-    db.execute("""SELECT id, race_name FROM races order by race_name""")
-    races = db.fetchall()
+    db.execute("""SELECT weekends.id as weekend_id, races.id as race_id, race_name, weekend_name, year
+        FROM races
+        INNER JOIN weekends on weekends.id = races.weekend_id
+        ORDER by race_id""")
+    racesCur = db.fetchall()
+    races={}
+    for race in racesCur:
+        races.setdefault(race['year'],{})
+        races[race['year']].setdefault(race['weekend_name'],{})
+        races[race['year']][race['weekend_name']].setdefault(race['race_name'],{'race_id':race['race_id'],'weekend_id':race['weekend_id']})
 
+    
+    year = int(year)
+    raceid = races[year][weekend_name][race_name]['race_id']
+    
+    
     db.execute("""SELECT kart_name, id FROM karts order by id""")
     kartsCur = db.fetchall()
     karts={}
@@ -36,9 +49,11 @@ def race(raceid):
                 WHERE races.id = %s
                 ORDER by qualy_rank""",(raceid,))
     qualy = db.fetchall()
+    
 
     x,y = animationFactory(raceid)
-    return render_template('race/race.html',races=races, karts = karts, qualy = qualy, x=x, y=y)
+
+    return render_template('race/race.html',races=races, karts = karts, qualy = qualy, x=x, y=y, race_name=race_name, year=year, weekend_name=weekend_name)
 
 def getLaps(raceid):
     conn = get_db()
