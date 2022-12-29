@@ -6,7 +6,7 @@
 
 {% block content%}
     
-    <select id="year" onchange="updateWeekends()">
+    <select id="year_selector" onchange="updateWeekends()">
     {% for year_select in races.keys() %}
         <option value="{{year_select}}">{{year_select}}</option>
     {% endfor %}
@@ -61,10 +61,16 @@
 
 <script type="text/javascript">
 
+    document.querySelector('#year_selector [value="{{year}}"]').selected = true;
+    document.querySelector('#weekend [value="{{weekend_name}}"]').selected = true;
+    document.querySelector('#race [value="{{race_name}}"]').selected = true;
+    
+
+
     function updateWeekends(){
         races = {{races|tojson}};
         console.log(races);
-        var yearSelect = document.getElementById("year");
+        var yearSelect = document.getElementById("year_selector");
         var weekendSelect = document.getElementById("weekend");
 
         year = yearSelect.options[yearSelect.selectedIndex].value
@@ -86,7 +92,7 @@
     function updateRaces(){
         races = {{races|tojson}};
         console.log(races);
-        var yearSelect = document.getElementById("year");
+        var yearSelect = document.getElementById("year_selector");
         var weekendSelect = document.getElementById("weekend");
         var raceSelect = document.getElementById("race");
 
@@ -108,7 +114,7 @@
 
     function redir(){
 
-        var yearSelect = document.getElementById("year");
+        var yearSelect = document.getElementById("year_selector");
         var weekendSelect = document.getElementById("weekend");
         var raceSelect = document.getElementById("race");
 
